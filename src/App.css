@@ -7,9 +7,9 @@
   z-index: 10;
   overflow: hidden;
   isolation: isolate;
-  /* Matches the natural light-grey/white surface in hands.jpg, including its
-     softer edges. This stays behind the animation on every screen size. */
-  --opening-backdrop: radial-gradient(ellipse 82% 76% at 50% 48%, #fdfdfd 0%, #fafafa 42%, #edf0ee 72%, #d7dad7 100%);
+  /* A clean backdrop lets the clipped hand layers leave without revealing
+     rectangular pieces of the original photo background. */
+  --opening-backdrop: #fff;
   background: var(--opening-backdrop);
   transition: none;
 }
@@ -66,8 +66,9 @@
   display: block;
   width: 100%;
   height: 100%;
-  /* Keep every moving layer aligned with the full-screen photo backdrop. */
-  filter: none;
+  /* Lift the original paper background to pure white. This keeps clip edges
+     invisible while retaining the hands, jewellery and shadows. */
+  filter: brightness(1.12) contrast(1.15);
   transition: transform 1.6s cubic-bezier(0.55, 0, 0.75, 0.4);
 }
 
