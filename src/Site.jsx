@@ -327,7 +327,7 @@ function EventsPage() {
             <p className="site-event-day">{e.day}</p>
             <p className="site-event-time">{e.time}</p>
             {e.extra && <p className="site-event-extra">{e.extra}</p>}
-            <p className="site-event-venue">{VENUE}</p>
+            <p className="site-event-venue">{e.venue || VENUE}</p>
             <AddToCalendar events={[e]} label="Save this event" />
             </div>
           </article>
