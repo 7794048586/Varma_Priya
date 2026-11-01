@@ -468,7 +468,13 @@ function GiftPage() {
       <p className="events-lead">A little note from the couple.</p>
       <div className="gift-grid">
         <figure className="gift-photo">
-          <Photo srcs={GIFT_PHOTO} alt="Likhith Varma and Mohana Priya seated together" position="center 70%" />
+          <Photo
+            srcs={GIFT_PHOTO}
+            alt="Likhith Varma and Mohana Priya seated together"
+            className="gift-photo-image"
+            position="center 70%"
+            priority
+          />
         </figure>
         <article className="gift-message">
           <Bouquet />

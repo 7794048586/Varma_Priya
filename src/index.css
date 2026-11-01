@@ -1512,7 +1512,9 @@ img.is-loaded {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: event-image-drift 16s ease-in-out infinite alternate;
+  /* Keep the original 2851 × 4276 portrait crisp and still. */
+  animation: none;
+  filter: contrast(1.04) saturate(1.06);
 }
 
 .gift-message {
