@@ -35,14 +35,23 @@ function ScratchLayer({ className, onProgress }) {
       ctx.fillRect(0, 0, width, height)
       const size = Math.max(14, Math.min(width, height) * 0.22)
       const font = `${size}px "Great Vibes"`
-      document.fonts.load(font).finally(() => {
-        // A resize/orientation change may have repainted the canvas meanwhile.
-        if (canvas.width !== width * dpr || canvas.height !== height * dpr) return
+      const writePrompt = () => {
+        ctx.save()
         ctx.fillStyle = '#fffaf4'
         ctx.font = `${font}, cursive`
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
+        ctx.shadowColor = 'rgba(41, 13, 38, 0.38)'
+        ctx.shadowBlur = Math.max(2, size * 0.07)
         ctx.fillText('Scratch here', width / 2, height / 2)
+        ctx.restore()
+      }
+      // The instruction appears immediately, even before the web font loads.
+      writePrompt()
+      document.fonts.load(font).finally(() => {
+        // A resize/orientation change may have repainted the canvas meanwhile.
+        if (canvas.width !== width * dpr || canvas.height !== height * dpr) return
+        writePrompt()
       })
     }
 

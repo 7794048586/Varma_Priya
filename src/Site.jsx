@@ -475,12 +475,44 @@ const waitForSectionImages = (section) => {
 export default function Site() {
   const [index, setIndex] = useState(0)
   const [isTabLoading, setIsTabLoading] = useState(false)
+  const [isHomeLoading, setIsHomeLoading] = useState(true)
+  const [isAtHomeTop, setIsAtHomeTop] = useState(true)
   const pageRefs = useRef([])
   const navRef = useRef(null)
   const tabNavigationPending = useRef(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
+  }, [])
+
+  // The transparent Home header belongs only to the actual top of Home.
+  // Keeping it independent from the active tab prevents RSVP from stretching
+  // or changing layout while a reverse scroll is still in progress.
+  useEffect(() => {
+    const updateHomePosition = () => setIsAtHomeTop(window.scrollY < 12)
+    updateHomePosition()
+    window.addEventListener('scroll', updateHomePosition, { passive: true })
+    return () => window.removeEventListener('scroll', updateHomePosition)
+  }, [])
+
+  // Keep the first view polished on a slow connection: the circular couple
+  // portrait remains visible until the full Home image has decoded.
+  useEffect(() => {
+    let active = true
+    const homeImage = new Image()
+    homeImage.src = COUPLE[0]
+    const finish = () => {
+      if (active) setIsHomeLoading(false)
+    }
+    homeImage.onload = () => {
+      if (homeImage.decode) homeImage.decode().catch(() => undefined).finally(finish)
+      else finish()
+    }
+    homeImage.onerror = finish
+    if (homeImage.complete) homeImage.onload()
+    return () => {
+      active = false
+    }
   }, [])
 
   // Activate the matching menu item while each full page section comes into view.
@@ -492,7 +524,9 @@ export default function Site() {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
         if (visible) setIndex(Number(visible.target.dataset.pageIndex))
       },
-      { threshold: [0.3, 0.55, 0.75], rootMargin: '-12% 0px -28% 0px' },
+      // A narrow central detection zone works for short and very tall pages.
+      // The former 30% threshold left long pages such as Events inactive.
+      { threshold: [0, 0.01], rootMargin: '-24% 0px -56% 0px' },
     )
     pageRefs.current.filter(Boolean).forEach((page) => observer.observe(page))
     return () => observer.disconnect()
@@ -528,7 +562,7 @@ export default function Site() {
   }
 
   return (
-    <div className={`site ${index === 0 ? 'site-home-active' : ''}`}>
+    <div className={`site ${isAtHomeTop ? 'site-home-active' : ''}`}>
       <header className="site-header">
         <Vine className="vine-left" />
         <Vine className="vine-right" />
@@ -580,6 +614,14 @@ export default function Site() {
             <p>Preparing your celebration</p>
             <small>Just a beautiful moment…</small>
           </div>
+        </div>
+      )}
+      {isHomeLoading && (
+        <div className="site-home-loader" role="status" aria-live="polite" aria-label="Loading Likhith Varma and Mohana Priya's wedding website">
+          <div className="site-home-loader-glow" aria-hidden="true" />
+          <img className="site-home-loader-photo" src={COUPLE[0]} alt="" />
+          <p>Likhith Varma <span>&amp;</span> Mohana Priya</p>
+          <small>Preparing your celebration</small>
         </div>
       )}
     </div>
