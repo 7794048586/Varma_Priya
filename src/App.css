@@ -7,9 +7,10 @@
   z-index: 10;
   overflow: hidden;
   isolation: isolate;
-  /* The hand photo has a white background. Keep that same clean white surface
-     behind it so mobile browsers never reveal or fade to the old plum layer. */
-  background: #fff;
+  /* Matches the natural light-grey/white surface in hands.jpg, including its
+     softer edges. This stays behind the animation on every screen size. */
+  --opening-backdrop: radial-gradient(ellipse 82% 76% at 50% 48%, #fdfdfd 0%, #fafafa 42%, #edf0ee 72%, #d7dad7 100%);
+  background: var(--opening-backdrop);
   transition: none;
 }
 
@@ -20,7 +21,7 @@
   inset: -24px;
   z-index: 0;
   content: '';
-  background: #fff;
+  background: var(--opening-backdrop);
   opacity: 1;
 }
 
@@ -51,7 +52,7 @@
   height: 100dvh;
   aspect-ratio: auto;
   border: 0;
-  background: #fff;
+  background: var(--opening-backdrop);
   box-shadow: none;
   transform: translate(-50%, -50%);
   transition:
@@ -66,11 +67,11 @@
   width: 100%;
   height: 100%;
   /* Keep every moving layer aligned with the full-screen photo backdrop. */
-  filter: brightness(1.12) contrast(1.15);
+  filter: none;
   transition: transform 1.6s cubic-bezier(0.55, 0, 0.75, 0.4);
 }
 
-/* The full image is shown first. It then fades into its white backdrop while
+/* The full image is shown first. It then fades into its matching photo backdrop while
    the two clipped hands travel completely beyond the viewport. */
 .layer-base {
   z-index: 1;
