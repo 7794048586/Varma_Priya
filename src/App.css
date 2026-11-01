@@ -7,10 +7,10 @@
   z-index: 10;
   overflow: hidden;
   isolation: isolate;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(255, 250, 244, 0.98), rgba(244, 227, 235, 0.88) 34%, transparent 66%),
-    linear-gradient(155deg, #6b2755, #a05276 52%, #3c1635);
-  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* The hand photo has a white background. Keep that same clean white surface
+     behind it so mobile browsers never reveal or fade to the old plum layer. */
+  background: #fff;
+  transition: none;
 }
 
 /* On tall screens the full 3:2 photograph stays visible in the middle,
@@ -20,22 +20,22 @@
   inset: -24px;
   z-index: 0;
   content: '';
-  background:
-    radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.28), transparent 48%),
-    radial-gradient(circle at 14% 86%, rgba(228, 197, 130, 0.3), transparent 31%),
-    radial-gradient(circle at 87% 12%, rgba(255, 236, 244, 0.2), transparent 30%);
-  opacity: 0.9;
+  background: #fff;
+  opacity: 1;
 }
 
 /* Crossfade: the rings drift towards the viewer and dissolve into the invitation */
 .home.leaving {
-  opacity: 0;
+  /* Let the invitation replace the solid white opening screen directly.
+     Fading the parent caused the mobile background to flash and disappear. */
+  z-index: 0;
+  opacity: 1;
   pointer-events: none;
 }
 
 .home.leaving .photo {
-  transform: translate(-50%, -50%) scale(1.35);
-  filter: blur(8px);
+  transform: translate(-50%, -50%);
+  filter: none;
 }
 
 /* Covers the screen like object-fit: cover, so the ring button stays on the rings */
@@ -124,6 +124,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
+  z-index: 11;
   background: #fff;
 }
 
