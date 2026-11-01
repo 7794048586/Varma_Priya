@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import GalleryPage, { GALLERY } from './Gallery'
 import { AddToCalendar, Countdown, DirectionsButton } from './Extras'
-import { HALDI_APPLE_DIRECTIONS, HALDI_DIRECTIONS, HALDI_VENUE, COUPLE_NAMES, DATES, EVENTS, VENUE } from './wedding'
+import { APPLE_DIRECTIONS, COUPLE_NAMES, DATES, DIRECTIONS, EVENTS, VENUE } from './wedding'
 
 // Photos live in src/assets/gallery.  Keep the originals intact and use their
 // Vite URLs directly, so the browser always receives the full-resolution files.
@@ -375,28 +375,28 @@ function TravelPage() {
   return (
     <section className="events-showcase travel-showcase">
       <h2 className="page-title">Travel &amp; Venue</h2>
-      <p className="events-lead">Plan your route to the Haldi celebration at the Groom's House.</p>
+      <p className="events-lead">Choose your map and plan your route to the wedding celebration.</p>
       <div className="travel-map-grid">
         <article className="travel-map-card from-left">
           <figure>
-            <Photo srcs={TRAVEL_MAP_PHOTOS[0]} alt="Google Maps route to the Groom's House Haldi celebration" position="center 42%" />
+            <Photo srcs={TRAVEL_MAP_PHOTOS[0]} alt="Google Maps route to MR Convention Hall" position="center 42%" />
           </figure>
           <div>
-            <p className="site-event-note">Haldi location</p>
+            <p className="site-event-note">Wedding location</p>
             <h3>Google Maps</h3>
-            <p>{HALDI_VENUE}</p>
-            <a className="btn btn-primary" href={HALDI_DIRECTIONS} target="_blank" rel="noopener noreferrer">Open Google Maps</a>
+            <p>{VENUE}</p>
+            <a className="btn btn-primary" href={DIRECTIONS} target="_blank" rel="noopener noreferrer">Open Google Maps</a>
           </div>
         </article>
         <article className="travel-map-card from-right">
           <figure>
-            <Photo srcs={TRAVEL_MAP_PHOTOS[1]} alt="Apple Maps route to the Groom's House Haldi celebration" position="center 42%" />
+            <Photo srcs={TRAVEL_MAP_PHOTOS[1]} alt="Apple Maps route to MR Convention Hall" position="center 42%" />
           </figure>
           <div>
-            <p className="site-event-note">Haldi location</p>
+            <p className="site-event-note">Wedding location</p>
             <h3>Apple Maps</h3>
-            <p>{HALDI_VENUE}</p>
-            <a className="btn btn-primary" href={HALDI_APPLE_DIRECTIONS} target="_blank" rel="noopener noreferrer">Open Apple Maps</a>
+            <p>{VENUE}</p>
+            <a className="btn btn-primary" href={APPLE_DIRECTIONS} target="_blank" rel="noopener noreferrer">Open Apple Maps</a>
           </div>
         </article>
       </div>
@@ -404,7 +404,7 @@ function TravelPage() {
         <div>
           <p className="site-event-note">Wedding reminder</p>
           <h3>Save every wedding moment</h3>
-          <p>Haldi — 24 November at 3:00 PM, Groom's House ({HALDI_VENUE}), plus all wedding celebrations.</p>
+          <p>Haldi — 24 November at 3:00 PM, Duggunta Raju Palem, plus all wedding celebrations.</p>
         </div>
         <AddToCalendar events={EVENTS} label="Add wedding reminders" />
       </article>

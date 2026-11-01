@@ -1,7 +1,7 @@
 export const COUPLE_NAMES = 'Likhith Varma & Mohana Priya'
-export const VENUE = 'MR Convention, Podalakur'
+export const VENUE = 'MR Convention Hall, Podalakur'
 export const HALDI_COORDINATES = '14.310637,79.656181'
-export const HALDI_VENUE = `Groom's House, ${HALDI_COORDINATES}`
+export const HALDI_VENUE = 'Duggunta Raju Palem'
 export const DATES = 'November 25 – 26, 2026'
 
 export const EVENTS = [
