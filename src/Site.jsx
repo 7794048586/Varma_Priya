@@ -38,7 +38,7 @@ const COUPLE_STAGE = [...namedImages('Image (7)', 'Image (6)', 'Image (1)'), ...
 const TAB_PHOTOS = [...namedImages('Image.jpg', 'Image (1)', 'Image (7)', 'Image (6)'), ...ALL]
 const RINGS = TAB_PHOTOS
 // The relaxed sitting portrait is reserved for the Gift Registry message.
-const GIFT_PHOTO = [...namedImages('Image (1)'), ...ALL]
+const GIFT_PHOTO = [...namedAssetImages('Image.jpg'), ...ALL]
 const EVENT_PHOTOS = [
   [...namedImages('Image (7)', 'Image (6)'), ...ALL],
   [...namedImages('Image (1)', 'Image (2)'), ...ALL],
@@ -468,7 +468,7 @@ function GiftPage() {
       <p className="events-lead">A little note from the couple.</p>
       <div className="gift-grid">
         <figure className="gift-photo">
-          <Photo srcs={GIFT_PHOTO} alt="Likhith Varma and Mohana Priya seated together" position="center 48%" />
+          <Photo srcs={GIFT_PHOTO} alt="Likhith Varma and Mohana Priya seated together" position="center 70%" />
         </figure>
         <article className="gift-message">
           <Bouquet />
