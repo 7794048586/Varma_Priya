@@ -59,17 +59,6 @@
     filter 1.6s ease;
 }
 
-/* Keep the real hands photo underneath the animated cut-outs. On a phone this
-   prevents the backdrop from becoming a blank white frame as the hands leave. */
-.photo::before {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  content: '';
-  background: url('/hands.jpg') center / 100% 100% no-repeat;
-  filter: brightness(1.12) contrast(1.15);
-}
-
 .layer {
   position: absolute;
   inset: 0;
@@ -81,12 +70,12 @@
   transition: transform 1.6s cubic-bezier(0.55, 0, 0.75, 0.4);
 }
 
-/* The full image is shown first. When the rings are tapped, this foreground
-   copy fades while the same full-screen photo remains behind the moving hands. */
+/* The full image is shown first. It then fades into its white backdrop while
+   the two clipped hands travel completely beyond the viewport. */
 .layer-base {
   z-index: 1;
   object-fit: fill;
-  transition: opacity 0.28s ease;
+  transition: opacity 1.12s cubic-bezier(0.22, 0.82, 0.28, 1);
 }
 
 .layer-rings,
@@ -94,6 +83,7 @@
 .layer-right {
   z-index: 2;
   mix-blend-mode: multiply;
+  will-change: transform;
 }
 
 .layer-rings {
@@ -117,12 +107,12 @@
 
 .step-1 .layer-left,
 .step-2 .layer-left {
-  transform: translate(-30%, -85%) rotate(-10deg);
+  transform: translate(-34%, -92%) rotate(-11deg);
 }
 
 .step-1 .layer-right,
 .step-2 .layer-right {
-  transform: translate(45%, 75%) rotate(8deg);
+  transform: translate(50%, 82%) rotate(9deg);
 }
 
 .next-screen {
