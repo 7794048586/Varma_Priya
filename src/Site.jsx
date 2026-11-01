@@ -19,6 +19,17 @@ import {
 const ALL = GALLERY.map((g) => g.src)
 const image = (name) => GALLERY.find((g) => g.name === name.replace(/\.[^.]+$/, ''))?.src
 const namedImages = (...names) => names.map(image).filter(Boolean)
+const ALL_ASSETS = Object.entries(
+  import.meta.glob('./assets/gallery/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  }),
+)
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+  .map(([path, src]) => ({ src, name: path.split('/').pop().replace(/\.[^.]+$/, '') }))
+const assetImage = (name) => ALL_ASSETS.find((photo) => photo.name === name.replace(/\.[^.]+$/, ''))?.src
+const namedAssetImages = (...names) => names.map(assetImage).filter(Boolean)
 
 // Image (6) is the main portrait; Image (7) and Image (1) keep the other
 // screens equally personal instead of falling back to the older stock photos.
@@ -34,8 +45,10 @@ const EVENT_PHOTOS = [
 ]
 const EVENT_MARKS = ['✦', '⌘', '♫', '♡']
 const TRAVEL_MAP_PHOTOS = [
-  [...namedImages('Image (3)', 'Image (8)', 'Image (4)'), ...ALL],
-  [...namedImages('Image (4)', 'Image (5)', 'Image.jpg'), ...ALL],
+  [...namedAssetImages('Image (3)', 'Image (8)', 'Image (4)'), ...ALL],
+  [...namedAssetImages('Image (4)', 'Image (5)', 'Image.jpg'), ...ALL],
+  [...namedAssetImages('Image (5)', 'Image (2)', 'Image (3)'), ...ALL],
+  [...namedAssetImages('Image (8)', 'Image (4)', 'Image (5)'), ...ALL],
 ]
 
 const cubic = (p, t) => {
@@ -413,7 +426,7 @@ function TravelPage() {
         </article>
         <article className="travel-map-card from-left">
           <figure>
-            <Photo srcs={TRAVEL_MAP_PHOTOS[0]} alt="Google Maps route to the Haldi celebration in Duggunta Raju Palem" position="center 42%" />
+            <Photo srcs={TRAVEL_MAP_PHOTOS[2]} alt="Google Maps route to the Haldi celebration in Duggunta Raju Palem" position="center 42%" />
           </figure>
           <div>
             <p className="site-event-note">Haldi location</p>
@@ -424,7 +437,7 @@ function TravelPage() {
         </article>
         <article className="travel-map-card from-right">
           <figure>
-            <Photo srcs={TRAVEL_MAP_PHOTOS[1]} alt="Apple Maps route to the Haldi celebration in Duggunta Raju Palem" position="center 42%" />
+            <Photo srcs={TRAVEL_MAP_PHOTOS[3]} alt="Apple Maps route to the Haldi celebration in Duggunta Raju Palem" position="center 42%" />
           </figure>
           <div>
             <p className="site-event-note">Haldi location</p>
