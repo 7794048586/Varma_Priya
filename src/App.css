@@ -59,20 +59,30 @@
     filter 1.6s ease;
 }
 
+/* Keep the real hands photo underneath the animated cut-outs. On a phone this
+   prevents the backdrop from becoming a blank white frame as the hands leave. */
+.photo::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: '';
+  background: url('/hands.jpg') center / 100% 100% no-repeat;
+  filter: brightness(1.12) contrast(1.15);
+}
+
 .layer {
   position: absolute;
   inset: 0;
   display: block;
   width: 100%;
   height: 100%;
-  /* Pushes the grey backdrop to pure white so moving strips have no visible edges */
+  /* Keep every moving layer aligned with the full-screen photo backdrop. */
   filter: brightness(1.12) contrast(1.15);
   transition: transform 1.6s cubic-bezier(0.55, 0, 0.75, 0.4);
 }
 
-/* The full image is shown first. When the rings are tapped, it fades to a
-   clean white surface while the two hand-only layers move away. Using
-   multiply blending keeps the original white photo background stationary. */
+/* The full image is shown first. When the rings are tapped, this foreground
+   copy fades while the same full-screen photo remains behind the moving hands. */
 .layer-base {
   z-index: 1;
   object-fit: fill;
