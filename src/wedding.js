@@ -1,5 +1,7 @@
 export const COUPLE_NAMES = 'Likhith Varma & Mohana Priya'
 export const VENUE = 'MR Convention, Podalakur'
+export const HALDI_COORDINATES = '14.310637,79.656181'
+export const HALDI_VENUE = `Groom's House, ${HALDI_COORDINATES}`
 export const DATES = 'November 25 – 26, 2026'
 
 export const EVENTS = [
@@ -8,10 +10,10 @@ export const EVENTS = [
     title: 'Haldi Ceremony',
     note: 'Haldi Celebration',
     day: 'Tuesday, 24th November 2026',
-    time: 'Evening',
-    venue: 'Duggunta Rajupalem, near Ramalayam',
-    start: '2026-11-24T18:00:00+05:30',
-    end: '2026-11-24T20:00:00+05:30',
+    time: '3:00 PM onwards',
+    venue: HALDI_VENUE,
+    start: '2026-11-24T15:00:00+05:30',
+    end: '2026-11-24T17:00:00+05:30',
   },
   {
     id: 'reception',
@@ -27,14 +29,14 @@ export const EVENTS = [
     title: 'Dinner',
     note: 'Wedding Dinner',
     day: 'Wednesday, 25th November 2026',
-    time: '8:00 PM onwards',
-    start: '2026-11-25T20:00:00+05:30',
+    time: '7:00 PM onwards',
+    start: '2026-11-25T19:00:00+05:30',
     end: '2026-11-25T22:00:00+05:30',
   },
   {
-    id: 'dance-party',
-    title: 'Group Dance Party',
-    note: 'Celebrate Together',
+    id: 'sangeeth',
+    title: 'Sangeeth',
+    note: 'Sangeeth Celebration',
     day: 'Wednesday, 25th November 2026',
     time: '10:00 PM onwards',
     start: '2026-11-25T22:00:00+05:30',
@@ -58,6 +60,8 @@ const q = encodeURIComponent
 export const MAP_EMBED = `https://maps.google.com/maps?q=${q(VENUE)}&z=15&output=embed`
 export const DIRECTIONS = `https://www.google.com/maps/dir/?api=1&destination=${q(VENUE)}&travelmode=driving`
 export const APPLE_DIRECTIONS = `https://maps.apple.com/?daddr=${q(VENUE)}&dirflg=d`
+export const HALDI_DIRECTIONS = `https://www.google.com/maps/dir/?api=1&destination=${q(HALDI_COORDINATES)}&travelmode=driving`
+export const HALDI_APPLE_DIRECTIONS = `https://maps.apple.com/?daddr=${q(HALDI_COORDINATES)}&dirflg=d`
 
 // iPhone / iPad (iPadOS reports itself as a Mac with touch)
 export const isApple = () =>
@@ -98,7 +102,7 @@ export function downloadIcs(events) {
       `DTEND:${utc(e.end)}`,
       `SUMMARY:${icsText(`${e.title} · ${COUPLE_NAMES}`)}`,
       `DESCRIPTION:${icsText(describe(e))}`,
-      `LOCATION:${icsText(VENUE)}`,
+      `LOCATION:${icsText(eventVenue(e))}`,
       ...['-P1D', '-PT2H'].flatMap((trigger) => [
         'BEGIN:VALARM',
         `TRIGGER:${trigger}`,

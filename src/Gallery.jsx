@@ -1,8 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-// Every image dropped into src/assets/gallery shows up here, sorted by file name
-export const GALLERY = Object.entries(
+// Keep a concise five-photo story: two engagement moments and three
+// pre-wedding portraits. The original source photos remain untouched.
+const SELECTED_GALLERY = [
+  ['couple-1', 'Engagement'],
+  ['couple-2', 'Engagement'],
+  ['Image (6)', 'Pre-wedding'],
+  ['Image (7)', 'Pre-wedding'],
+  ['Image (1)', 'Pre-wedding'],
+]
+
+const ALL_GALLERY = Object.entries(
   import.meta.glob('./assets/gallery/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', {
     eager: true,
     query: '?url',
@@ -11,6 +20,13 @@ export const GALLERY = Object.entries(
 )
   .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
   .map(([path, src]) => ({ src, name: path.split('/').pop().replace(/\.[^.]+$/, '') }))
+
+export const GALLERY = SELECTED_GALLERY
+  .map(([name, collection]) => {
+    const photo = ALL_GALLERY.find((item) => item.name === name)
+    return photo && { ...photo, collection }
+  })
+  .filter(Boolean)
 
 export const pick = (prefix) => GALLERY.filter((g) => g.name.startsWith(prefix)).map((g) => g.src)
 
@@ -102,7 +118,7 @@ export default function GalleryPage() {
             <button key={g.src} type="button" className="gallery-item" onClick={() => setOpen(i)}>
               <img
                 src={g.src}
-                alt={`Likhith Varma and Mohana Priya, photo ${i + 1}`}
+                alt={`${g.collection} photo of Likhith Varma and Mohana Priya, photo ${i + 1}`}
                 loading={i < 4 ? 'eager' : 'lazy'}
                 fetchPriority={i < 4 ? 'high' : 'auto'}
                 decoding="async"
