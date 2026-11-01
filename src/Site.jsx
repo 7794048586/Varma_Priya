@@ -1,7 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import GalleryPage, { GALLERY } from './Gallery'
 import { AddToCalendar, Countdown, DirectionsButton } from './Extras'
-import { APPLE_DIRECTIONS, COUPLE_NAMES, DATES, DIRECTIONS, EVENTS, VENUE } from './wedding'
+import {
+  APPLE_DIRECTIONS,
+  COUPLE_NAMES,
+  DATES,
+  DIRECTIONS,
+  EVENTS,
+  HALDI_APPLE_DIRECTIONS,
+  HALDI_COORDINATES,
+  HALDI_DIRECTIONS,
+  HALDI_VENUE,
+  VENUE,
+} from './wedding'
 
 // Photos live in src/assets/gallery.  Keep the originals intact and use their
 // Vite URLs directly, so the browser always receives the full-resolution files.
@@ -220,7 +231,8 @@ function RsvpPage() {
       `RSVP for ${COUPLE_NAMES}'s wedding (${DATES}, ${VENUE})\n` +
       `Name: ${f.get('name')}\nAttending: ${f.get('attending')}\nGuests: ${f.get('guests')}` +
       (f.get('message') ? `\nMessage: ${f.get('message')}` : '')
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener')
+    const subject = `Wedding RSVP — ${f.get('name')}`
+    window.location.href = `mailto:muppalalikhithvarma970@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`
     setSent(true)
   }
 
@@ -375,7 +387,7 @@ function TravelPage() {
   return (
     <section className="events-showcase travel-showcase">
       <h2 className="page-title">Travel &amp; Venue</h2>
-      <p className="events-lead">Choose your map and plan your route to the wedding celebration.</p>
+      <p className="events-lead">Choose your map and plan your route to each celebration.</p>
       <div className="travel-map-grid">
         <article className="travel-map-card from-left">
           <figure>
@@ -397,6 +409,28 @@ function TravelPage() {
             <h3>Apple Maps</h3>
             <p>{VENUE}</p>
             <a className="btn btn-primary" href={APPLE_DIRECTIONS} target="_blank" rel="noopener noreferrer">Open Apple Maps</a>
+          </div>
+        </article>
+        <article className="travel-map-card from-left">
+          <figure>
+            <Photo srcs={TRAVEL_MAP_PHOTOS[0]} alt="Google Maps route to the Haldi celebration in Duggunta Raju Palem" position="center 42%" />
+          </figure>
+          <div>
+            <p className="site-event-note">Haldi location</p>
+            <h3>Google Maps</h3>
+            <p>{HALDI_VENUE} · {HALDI_COORDINATES}</p>
+            <a className="btn btn-primary" href={HALDI_DIRECTIONS} target="_blank" rel="noopener noreferrer">Open Google Maps</a>
+          </div>
+        </article>
+        <article className="travel-map-card from-right">
+          <figure>
+            <Photo srcs={TRAVEL_MAP_PHOTOS[1]} alt="Apple Maps route to the Haldi celebration in Duggunta Raju Palem" position="center 42%" />
+          </figure>
+          <div>
+            <p className="site-event-note">Haldi location</p>
+            <h3>Apple Maps</h3>
+            <p>{HALDI_VENUE} · {HALDI_COORDINATES}</p>
+            <a className="btn btn-primary" href={HALDI_APPLE_DIRECTIONS} target="_blank" rel="noopener noreferrer">Open Apple Maps</a>
           </div>
         </article>
       </div>
