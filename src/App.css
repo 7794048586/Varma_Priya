@@ -1,0 +1,486 @@
+.home {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+  z-index: 10;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 250, 244, 0.98), rgba(244, 227, 235, 0.88) 34%, transparent 66%),
+    linear-gradient(155deg, #6b2755, #a05276 52%, #3c1635);
+  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* On tall screens the full 3:2 photograph stays visible in the middle,
+   while its soft full-viewport copy fills the space above and below. */
+.home::before {
+  position: absolute;
+  inset: -24px;
+  z-index: 0;
+  content: '';
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.28), transparent 48%),
+    radial-gradient(circle at 14% 86%, rgba(228, 197, 130, 0.3), transparent 31%),
+    radial-gradient(circle at 87% 12%, rgba(255, 236, 244, 0.2), transparent 30%);
+  opacity: 0.9;
+}
+
+/* Crossfade: the rings drift towards the viewer and dissolve into the invitation */
+.home.leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.home.leaving .photo {
+  transform: translate(-50%, -50%) scale(1.35);
+  filter: blur(8px);
+}
+
+/* Covers the screen like object-fit: cover, so the ring button stays on the rings */
+.photo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  /* The opening photograph deliberately stretches to the viewport, so it
+     fills every edge on phones and tablets instead of sitting in a narrow band. */
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  aspect-ratio: auto;
+  border: 0;
+  background: #fff;
+  box-shadow: none;
+  transform: translate(-50%, -50%);
+  transition:
+    transform 1.6s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 1.6s ease;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Pushes the grey backdrop to pure white so moving strips have no visible edges */
+  filter: brightness(1.12) contrast(1.15);
+  transition: transform 1.6s cubic-bezier(0.55, 0, 0.75, 0.4);
+}
+
+/* The full image is shown first. When the rings are tapped, it fades to a
+   clean white surface while the two hand-only layers move away. Using
+   multiply blending keeps the original white photo background stationary. */
+.layer-base {
+  z-index: 1;
+  object-fit: fill;
+  transition: opacity 0.28s ease;
+}
+
+.layer-rings,
+.layer-left,
+.layer-right {
+  z-index: 2;
+  mix-blend-mode: multiply;
+}
+
+.layer-rings {
+  clip-path: inset(40% 43% 32% 42%);
+}
+
+.layer-left {
+  clip-path: polygon(7% 0, 25% 0, 28% 18%, 30% 43%, 30% 68%, 27% 83%, 23% 65%, 18% 45%, 13% 22%);
+  transform-origin: 20% 0%;
+}
+
+.layer-right {
+  clip-path: polygon(63% 17%, 72% 17%, 80% 30%, 86% 47%, 100% 77%, 100% 100%, 77% 100%, 71% 85%, 67% 59%);
+  transform-origin: 100% 100%;
+}
+
+.step-1 .layer-base,
+.step-2 .layer-base {
+  opacity: 0;
+}
+
+.step-1 .layer-left,
+.step-2 .layer-left {
+  transform: translate(-30%, -85%) rotate(-10deg);
+}
+
+.step-1 .layer-right,
+.step-2 .layer-right {
+  transform: translate(45%, 75%) rotate(8deg);
+}
+
+.next-screen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Blurred copy fills the screen behind the full, uncropped photo */
+.next-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(18px) saturate(0.75) brightness(0.76);
+  transform: scale(1.1);
+  animation: bg-in 2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* The invitation rises gently into place behind the fading rings */
+.next-stage {
+  position: absolute;
+  inset: 0;
+  animation: stage-in 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+@keyframes bg-in {
+  from {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes stage-in {
+  from {
+    opacity: 0;
+    transform: translateY(6%) scale(0.9);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.next-box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* Keep the whole interactive invitation in view. The photo behind it fills
+     every edge, so this remains full-screen without stretching the artwork. */
+  width: min(82vw, 105vh);
+  width: min(82vw, 105dvh);
+  aspect-ratio: 1;
+  container-type: inline-size;
+  transform: translate(-50%, -57.7%);
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .next-box {
+    width: min(96vw, 92vh);
+    width: min(96vw, 92dvh);
+  }
+}
+
+.next-btn {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  right: max(14px, env(safe-area-inset-right));
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.48em;
+  padding: 0.72em 0.9em;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.next-btn:active {
+  transform: scale(0.95);
+}
+
+.next-btn-arrow {
+  display: grid;
+  place-items: center;
+  width: 1.15em;
+  height: 1.15em;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.next-btn-arrow svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: arrow-nudge 1.4s ease-in-out infinite;
+}
+
+.next-btn:hover .next-btn-arrow svg {
+  animation-duration: 0.7s;
+}
+
+@keyframes btn-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.9);
+  }
+}
+
+@keyframes btn-glow {
+  50% {
+    box-shadow:
+      0 10px 26px rgba(41, 13, 38, 0.35),
+      0 0 0 6px rgba(197, 110, 152, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+}
+
+@keyframes btn-shine {
+  0%,
+  60% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes arrow-nudge {
+  0%,
+  100% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+}
+
+.next-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+}
+
+/* Covers the printed card with fur taken from the bottom of the same photo */
+.card-slot {
+  position: absolute;
+  left: 66.8%;
+  top: 39.3%;
+  width: 31.9%;
+  height: 37.3%;
+  background-image: url('/wedding.webp');
+  background-size: 100cqw 170cqw;
+  background-position: -66.8cqw -132.6cqw;
+}
+
+.next-base {
+  box-shadow: 0 20px 48px rgba(16, 6, 14, 0.38);
+}
+
+.card-layer,
+.env-layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Tucked under the envelope; App.jsx slides it out as the foil is scratched */
+.card-layer {
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.env-layer {
+  z-index: 2;
+}
+
+.invite-canvas {
+  position: absolute;
+  display: block;
+}
+
+.scratch {
+  position: absolute;
+  border-radius: 12px;
+  cursor: grab;
+  touch-action: none;
+  transition: opacity 0.6s ease;
+}
+
+/* Covers the envelope and the card area */
+.scratch-all {
+  z-index: 3;
+  left: 0.5%;
+  top: 38.5%;
+  width: 98.3%;
+  height: 38.5%;
+}
+
+.scratch-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ring-btn {
+  position: absolute;
+  left: 45.8%;
+  top: 53.8%;
+  width: max(48px, 6%);
+  z-index: 3;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  animation: glow 2s ease-out infinite;
+  transition: transform 0.3s ease, opacity 0.4s ease;
+}
+
+.step-1 .ring-btn,
+.step-2 .ring-btn {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ring-btn:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.ring-btn:focus-visible {
+  outline: 3px solid var(--purple-main);
+  outline-offset: 4px;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(100, 25, 79, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 22px rgba(100, 25, 79, 0);
+  }
+}
+
+/* Five-second Lord Ganesha transition */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #090609;
+  color: #f7e5b8;
+}
+
+.loader-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(167, 93, 22, 0.3), transparent 25%),
+    radial-gradient(circle at 50% 50%, #26100a 0%, #090609 65%);
+}
+
+.loader-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  width: min(86vw, 420px);
+  text-align: center;
+}
+
+.loader-ganesh {
+  position: absolute;
+  z-index: 2;
+  width: clamp(130px, 24vw, 220px);
+  animation: ganesh-breathe 2.2s ease-in-out infinite;
+}
+
+.loader-ganesh .ganesh {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 22px rgba(229, 166, 66, 0.5));
+}
+
+.loader-halo {
+  position: absolute;
+  top: 50%;
+  width: clamp(190px, 34vw, 310px);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  animation: halo-spin 16s linear infinite;
+}
+
+.loader-halo span {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 22px;
+  transform-origin: 1px calc(clamp(95px, 17vw, 155px));
+  background: linear-gradient(#f5cf70, transparent);
+}
+
+.loader-mantra {
+  margin: clamp(208px, 34vw, 286px) 0 0;
+  font: 600 clamp(21px, 4vw, 30px) / 1.2 var(--font-display);
+  color: #f6d486;
+}
+
+.loader-sub {
+  margin: 8px 0 18px;
+  font-size: clamp(14px, 2.5vw, 17px);
+  color: #f6e7c7;
+}
+
+.loader-bar {
+  width: min(100%, 270px);
+  height: 3px;
+  overflow: hidden;
+  background: rgba(246, 212, 134, 0.22);
+}
+
+.loader-bar span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  background: #f6d486;
+  animation: loader-progress 5s linear forwards;
+}
+
+.home-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: #000;
+}
+
+@keyframes ganesh-breathe {
+  50% { transform: scale(1.05); }
+}
+
+@keyframes halo-spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+@keyframes loader-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
